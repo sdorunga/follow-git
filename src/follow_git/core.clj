@@ -18,7 +18,8 @@
 
 (defn all-entries
   [git-function search-term]
-  (letfn [(entries-for-page [page] (println "Page: " page) (git-function search-term (conj {:page page} @auth)))]
+  (letfn [(entries-for-page [page] (println "Page: " page)
+            (git-function search-term (conj {:page page} @auth)))]
     (reduce  (fn [coll curr]
                (let [entries (entries-for-page curr)]
                  (if (or (= (count entries) 0)
@@ -28,8 +29,13 @@
              []
              (iterate inc 1))))
 
-(defn users-following [user] (println "Finding all followers") (all-entries tentacles.users/following user))
-(defn members-of-org [org] (println "finding all members") (all-entries tentacles.orgs/members org))
+(defn users-following [user]
+  (println "Finding all followers")
+  (all-entries tentacles.users/following user))
+
+(defn members-of-org [org]
+  (println "finding all members")
+  (all-entries tentacles.orgs/members org))
 
 (defn follow-unfollowed-users [user repo]
   (letfn [(set-of-logins [users] (into #{} (map :login users)))
