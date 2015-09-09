@@ -1,0 +1,8 @@
+Script started on Wed Sep  9 15:03:29 2015
+bash: set_bash_prompt: command not found
+bash-3.2$ lein repl
+bash: set_bash_prompt: command not found
+bash-3.2$ e[Kexit
+exit
+
+Script done on Wed Sep  9 15:03:33 2015
