@@ -18,8 +18,7 @@
 
 (defn all-entries
   [git-function search-term]
-  (letfn [(entries-for-page [page] (println "Page: " page)
-            (git-function search-term (conj {:page page} @auth)))]
+  (letfn [(entries-for-page [page] (git-function search-term (conj {:page page} @auth)))]
     (reduce  (fn [coll curr]
                (let [entries (entries-for-page curr)]
                  (if (or (= (count entries) 0)
@@ -31,18 +30,20 @@
 
 (defn users-following [user]
   (println "Finding all followers")
-  (all-entries tentacles.users/following user))
+  (future (all-entries tentacles.users/following user)))
 
 (defn members-of-org [org]
   (println "finding all members")
-  (all-entries tentacles.orgs/members org))
+  (future (all-entries tentacles.orgs/members org)))
 
 (defn follow-unfollowed-users [user repo]
   (letfn [(set-of-logins [users] (into #{} (map :login users)))
-          (follow [user] (println "Following user" user) (tentacles.users/follow user @auth))]
-    (let [unfollowed-users (s/difference
-           (set-of-logins (members-of-org repo))
-           (set-of-logins (users-following user)))]
-      (doall (map follow unfollowed-users))
+          (follow [user] (println "Following user" user) (future (tentacles.users/follow user @auth)))]
+    (let [followed (users-following user)
+          org-members (members-of-org repo)
+          unfollowed-users (s/difference (set-of-logins @org-members) (set-of-logins @followed))]
+      (doall (->> unfollowed-users
+                  (map follow)
+                  (map deref)))
       (println "Newly followed users: " (count unfollowed-users))
       (println "DONE"))))
