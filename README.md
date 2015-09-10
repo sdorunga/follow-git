@@ -1,32 +1,31 @@
 # follow-git
 
-FIXME: description
+Command line app for following all unfollowed users in an organization
 
 ## Installation
 
-Download from http://example.com/FIXME.
+Clone the repository and create an uberjar
+
+`git clone git@github.com:sdorunga1/follow-git.git && cd follow-git`
+
+`lein uberjar`
 
 ## Usage
 
-FIXME: explanation
+You can run the jar with your github username and password along with the organization
+whose members you want to follow
 
-    $ java -jar follow-git-0.1.0-standalone.jar [args]
+`java -jar target/uberjar/follow-git-0.1.0-standalone.jar <github-username> <password> <organisation>`
 
-## Options
+You can also use `lein run` instead if you don't want to compile the application
 
-FIXME: listing of options this app accepts.
+`lein run <github-username> <password> <organisation>`
 
 ## Examples
 
-...
+If I wanted to follow all the users of MakersAcademy I would do the following
 
-### Bugs
-
-...
-
-### Any Other Sections
-### That You Think
-### Might be Useful
+`lein run sdorunga1 mypassword makersacademy`
 
 ## License
 
