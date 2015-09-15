@@ -1,8 +1,8 @@
 (ns follow-git.core
+  (:require [clojure.set :as s]
+            [tentacles.orgs]
+            [tentacles.users])
   (:gen-class))
-(require '[clojure.set :as s])
-(require '[tentacles.orgs])
-(require '[tentacles.users])
 
 (declare follow-unfollowed-users)
 
